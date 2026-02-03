@@ -6,17 +6,17 @@
 #    By: iarrien- <iarrien-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/01/29 12:40:51 by iarrien-          #+#    #+#              #
-#    Updated: 2026/01/30 11:37:34 by iarrien-         ###   ########.fr        #
+#    Updated: 2026/02/02 17:59:25 by iarrien-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=libftprintf.a
+NAME=a.out
 
 CC=cc
-CFLAGS= -Wall -Werror -Wextra -I.
-LIB= ar rcs
+CFLAGS= -Wall -Werror -Wextra -I. -g
+LIB= libftprintf.a
 
-SRC=ft_printf.c ft_print_formats.c
+SRC=ft_printf.c  ft_print_formats.c  ft_print_ptr.c  ft_print_str.c ft_print_nbr.c ft_print_unnbr.c ft_print_hex.c
 OBJ=$(SRC:.c=.o)
 HEADERS=./libft/libft.h ft_printf.h
 
@@ -24,8 +24,8 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(HEADERS)
 	$(MAKE) -C ./libft
-	cp ./libft/libft.a $(NAME)
-	$(LIB) $(NAME) $(OBJ)
+	cp ./libft/libft.a $(LIB)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

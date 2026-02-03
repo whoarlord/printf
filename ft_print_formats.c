@@ -6,71 +6,64 @@
 /*   By: iarrien- <iarrien-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 16:46:11 by iarrien-          #+#    #+#             */
-/*   Updated: 2026/01/30 10:50:40 by iarrien-         ###   ########.fr       */
+/*   Updated: 2026/02/02 18:06:15 by iarrien-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printstr(char *s)
+t_flags	*ft_fill_flags(char const *s, t_flags *result)
 {
-	if (!s)
-		return (ft_putstr_fd("(null)", 1), 6);
-	ft_putstr_fd(s, 1);
-	return (ft_strlen(s));
-}
+	char const	*specifiers;
+	int			i;
 
-int	ft_printptr(unsigned long long nb)
-{
-	int		size;
-	char	*result;
-
-	size = ft_calculate_digits_hex(nb);
-	result = ft_number_to_base(nb, size, "0123456789abcdef");
-	if (*result == '0')
-		return (ft_putstr_fd("(nil)", 1), 5);
-	size = size + 2;
-	ft_putstr_fd("0x", 1);
-	ft_putstr_fd(result, 1);
-	return (size);
-}
-
-int	ft_printnbr(int nb)
-{
-	int		size;
-	long	nb2;
-
-	nb2 = nb;
-	size = 0;
-	if (nb2 < 0)
+	specifiers = "cspdiuxX";
+	i = 0;
+	result->insert_char[0] = '\0';
+	while (!(ft_strchr(specifiers, s[i])))
 	{
-		nb2 = nb2 * -1;
-		size++;
+		if (s[i] == '0' && !result->precision &&
+			!result->width && !result->zeros)
+			result->zeros = 1;
+		else if (ft_isdigit(s[i]) && !result->width && !result->precision)
+			result->width = ft_atoi(&s[i]);
+		else if (s[i] == ' ')
+			result->space = 1;
+		else if (s[i] == '-')
+			result->align_left = 1;
+		else if (s[i] == '+')
+		{
+			result->sign = 1;
+			result->insert_char[0] = '+';
+			result->insert_char[1] = '\0';
+		}
+		else if (s[i] == '.')
+		{
+			result->precision = ft_atoi(&s[i + 1]);
+			result->precision_exist = 1;
+			i = i + ft_calculate_digits(result->precision);
+		}
+		else if (s[i] == '#')
+			result->hash = 1;
+		i++;
 	}
-	size = size + ft_calculate_digits((unsigned int)nb2);
-	ft_putnbr_fd(nb, 1);
-	return (size);
+	return (result);
 }
 
-int	ft_print_unnbr(unsigned int nb)
+char	*ft_strjoin_len(const char *s1, const char *s2, size_t len)
 {
-	int		size;
 	char	*result;
+	int		lens1;
+	int		lens2;
 
-	size = ft_calculate_digits(nb);
-	result = ft_number_to_base(nb, size, "0123456789");
-	ft_putstr_fd(result, 1);
-	return (size);
-	return (size);
-}
-
-int	ft_print_hex(unsigned int nb, const char *s)
-{
-	int		size;
-	char	*result;
-
-	size = ft_calculate_digits_hex(nb);
-	result = ft_number_to_base(nb, size, s);
-	ft_putstr_fd(result, 1);
-	return (size);
+	if (!s1 || !s2)
+		return (NULL);
+	lens1 = ft_strlen(s1);
+	lens2 = ft_strlen(s2);
+	result = malloc(sizeof(char) * (len + 1));
+	if (result == NULL)
+		return (NULL);
+	ft_strlcpy(result, s1, lens1 + 1);
+	ft_strlcpy(&result[lens1], s2, lens2 + 1);
+	return (result);
 }
