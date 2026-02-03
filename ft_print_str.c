@@ -6,7 +6,7 @@
 /*   By: iarrien- <iarrien-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 19:13:10 by iarrien-          #+#    #+#             */
-/*   Updated: 2026/02/02 16:54:00 by iarrien-         ###   ########.fr       */
+/*   Updated: 2026/02/03 14:01:20 by iarrien-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,19 @@ int	ft_printstr(char *input, t_flags *flags)
 {
 	char	*result;
 	int		size;
+	int result_state;
 
+	result_state = 0;
 	size = 0;
 	if (!input)
+	{
 		input = ft_strdup("(null)");
-	if (flags->precision < 6 && ft_strnstr(input, "(null)", 6))
-		ft_bzero(input, 6);
+		result_state = 1;
+	}
 	if (!flags->precision_exist)
 		flags->precision = ft_strlen(input);
+	if (flags->precision < 6 && ft_strnstr(input, "(null)", 6))
+		ft_bzero(input, 6);
 	if (ft_strlen(input) < (size_t)flags->precision)
 		flags->precision = ft_strlen(input);
 	if (flags->precision < flags->width)
@@ -33,6 +38,8 @@ int	ft_printstr(char *input, t_flags *flags)
 	result = ft_fill_str(flags, input, size);
 	ft_putstr_fd(result, 1);
 	free(result);
+	if (result_state)
+		free(input);
 	return (size);
 }
 
