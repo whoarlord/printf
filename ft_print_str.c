@@ -6,7 +6,7 @@
 /*   By: iarrien- <iarrien-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 19:13:10 by iarrien-          #+#    #+#             */
-/*   Updated: 2026/02/03 14:01:20 by iarrien-         ###   ########.fr       */
+/*   Updated: 2026/02/03 19:22:32 by iarrien-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int	ft_printstr(char *input, t_flags *flags)
 {
-	char	*result;
-	int		size;
-	int result_state;
+	int	size;
+	int	result_state;
 
 	result_state = 0;
 	size = 0;
@@ -35,27 +34,48 @@ int	ft_printstr(char *input, t_flags *flags)
 		size = flags->width;
 	else
 		size = flags->precision;
-	result = ft_fill_str(flags, input, size);
-	ft_putstr_fd(result, 1);
-	free(result);
+	ft_fill_str(flags, input);
 	if (result_state)
 		free(input);
 	return (size);
 }
 
-char	*ft_fill_str(t_flags *flags, char *input, int size)
+void	ft_fill_str(t_flags *flags, char *input)
 {
-	char	*result;
-
-	result = (char *) ft_calloc(size + 1, 1);
 	if (flags->align_left)
 	{
-		ft_strlcpy(&result[0], input, flags->precision + 1);
-		ft_memset(&result[flags->precision], ' ', size - flags->precision);
-		result[size] = '\0';
-		return (result);
+		ft_print_input(input, flags->precision);
+		ft_print_spaces(flags->width - flags->precision);
+		return ;
 	}
-	ft_memset(&result[0], ' ', size - flags->precision);
-	ft_strlcpy(&result[size - flags->precision], input, flags->precision + 1);
-	return (result);
+	ft_print_spaces(flags->width - flags->precision);
+	ft_print_input(input, flags->precision);
+}
+
+void	ft_print_spaces(int size)
+{
+	while (size > 0)
+	{
+		ft_putchar_fd(' ', 1);
+		size--;
+	}
+}
+
+void	ft_print_zeros(int size)
+{
+	while (size > 0)
+	{
+		ft_putchar_fd('0', 1);
+		size--;
+	}
+}
+
+void	ft_print_input(char *input, int size)
+{
+	while (*input && size > 0)
+	{
+		ft_putchar_fd(*input, 1);
+		size--;
+		input++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: iarrien- <iarrien-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 19:12:20 by iarrien-          #+#    #+#             */
-/*   Updated: 2026/02/02 17:44:51 by iarrien-         ###   ########.fr       */
+/*   Updated: 2026/02/03 18:41:13 by iarrien-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	ft_printptr(unsigned long long nb, t_flags *flags)
 {
 	int		size;
-	char	*result;
 	char	*prefix;
 	char	*input;
 	char	*temp;
@@ -32,25 +31,21 @@ int	ft_printptr(unsigned long long nb, t_flags *flags)
 	free(input);
 	if (size < flags->width)
 		size = flags->width;
-	result = ft_fill_ptr(flags, temp, size);
+	else
+		flags->width = size;
+	ft_fill_ptr(flags, temp);
 	free(temp);
-	ft_putstr_fd(result, 1);
-	free(result);
-	return (size);
+	return (flags->width);
 }
 
-char	*ft_fill_ptr(t_flags *flags, char *input, int size)
+void	ft_fill_ptr(t_flags *flags, char *input)
 {
-	char	*result;
-
-	result = ft_calloc(size + 1, 1);
 	if (flags->align_left)
 	{
-		ft_strlcpy(&result[0], input, ft_strlen(input) + 1);
-		ft_memset(&result[ft_strlen(input)], ' ', size - ft_strlen(input));
-		return (result);
+		ft_print_input(input, ft_strlen(input));
+		ft_print_spaces(flags->width - ft_strlen(input));
+		return ;
 	}
-	ft_memset(&result[0], ' ', size - ft_strlen(input));
-	ft_strlcpy(&result[size - ft_strlen(input)], input, ft_strlen(input) + 1);
-	return (result);
+	ft_print_spaces(flags->width - ft_strlen(input));
+	ft_print_input(input, ft_strlen(input));
 }

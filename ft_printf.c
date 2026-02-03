@@ -6,7 +6,7 @@
 /*   By: iarrien- <iarrien-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 09:39:17 by iarrien-          #+#    #+#             */
-/*   Updated: 2026/02/03 16:48:13 by iarrien-         ###   ########.fr       */
+/*   Updated: 2026/02/03 19:23:03 by iarrien-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,18 +370,5 @@ int	ft_printf(char const *s, ...)
 	ret2 = ft_printf("ft_print: |%0-+ #10.5d|\n", 42);
 	printf("ret: %d | %d\n", ret1, ret2);
 
-    ret2 = printf("%.4d%.2d%.20d%.0d%.0d%.d%.d%.d\n", 127, 0, 1023, 0, (int)-2147483648, 0, 1, (int)-2147483648);
-    ret1 = ft_printf("%.4d%.2d%.20d%.0d%.0d%.d%.d%.d\n", 127, 0, 1023, 0, (int)-2147483648, 0, 1, (int)-2147483648);
-    printf("ret: %d | %d\n", ret1, ret2);
     return 0;
-} */
-
-/* int main(void)
-{
-    int ret1;
-    int ret2;
-
-    ret1 = printf("%c%c%c*", '\0', '1', 1);
-    ret2 = ft_printf("%c%c%c*", '\0', '1', 1);
-    printf("ret: %d | %d\n", ret1, ret2);
 } */
